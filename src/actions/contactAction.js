@@ -1,4 +1,4 @@
-import { CREATE_CONTACT } from "../Constant/type"
+import { CREATE_CONTACT, GET_CONTACT } from "../Constant/type"
 
 //actions
 export const addContact= (contact)=>{
@@ -7,3 +7,12 @@ export const addContact= (contact)=>{
         payload: contact,
       }
     }
+
+
+
+    //get a cantact
+    export const getContact = (id) => ({
+      type: GET_CONTACT,
+      payload: id,
+    })
+    

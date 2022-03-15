@@ -1,34 +1,36 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addContact } from "../../actions/contactAction";
-import shortid from "shortid";
-import {useNavigate } from "react-router-dom"
+import React, { useState , useEffect  } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {  getContact } from "../../actions/contactAction";
 
-const AddContact = () => {
-let navigate =useNavigate();
+import { useNavigate, useParams } from "react-router-dom";
+// import rootReducer from "../../reducers/index"
+
+const EditContact = () => {
+  let { id } = useParams();
+
+  let navigate = useNavigate();
+  const contact = useSelector((state)=>state.contacts.contact)
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const createContact = (e) => {
-    e.preventDefault();
-    const new_contact = {
-        id:shortid.generate(),
-      name: name,
-      phone: phone,
-      email: email,
-    };
-    dispatch(addContact(new_contact));
-    navigate("/");
-    // console.log(name, phone,email);
-  };
+  useEffect(() => {
+    if(contact!=null){
+      setName(contact.name);
+      setPhone(contact.phone)
+      setEmail(contact.email)
+    }
+    
+    dispatch(getContact(id));
+  }, [contact]);
+
+
   return (
     <div className="card border-0 shadow">
       <div className="card-header">Add a Contact</div>
       <div className="card-body">
-        <form onSubmit={(e) => createContact(e)}>
-        
+        <form>
           <div className="form-group mb-2">
             <input
               type="text"
@@ -66,7 +68,7 @@ let navigate =useNavigate();
             />
           </div>
           <button type="submit" className="btn btn-primary">
-            Create Contact
+            Edit Contact
           </button>
         </form>
       </div>
@@ -74,4 +76,4 @@ let navigate =useNavigate();
   );
 };
 
-export default AddContact;
+export default EditContact;
