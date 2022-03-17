@@ -1,6 +1,6 @@
 import React, { useState , useEffect  } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  getContact } from "../../actions/contactAction";
+import {  getContact, updateContact } from "../../actions/contactAction";
 
 import { useNavigate, useParams } from "react-router-dom";
 // import rootReducer from "../../reducers/index"
@@ -25,12 +25,22 @@ const EditContact = () => {
     dispatch(getContact(id));
   }, [contact]);
 
+  const onUpdateContact=(e)=>{
+    e.preventDefault();
 
+    const update_contact=Object.assign(contact,{
+      name:name,
+      phone:phone,
+      email:email,})
+    // console.log(update_contact)
+    dispatch(updateContact(update_contact))
+    navigate("/");
+  }
   return (
     <div className="card border-0 shadow">
-      <div className="card-header">Add a Contact</div>
+      <div className="card-header">Edit Contact</div>
       <div className="card-body">
-        <form>
+        <form onSubmit={(e)=>onUpdateContact(e)}>
           <div className="form-group mb-2">
             <input
               type="text"
@@ -67,8 +77,8 @@ const EditContact = () => {
               //   aria-label=".form-control-sm example"
             />
           </div>
-          <button type="submit" className="btn btn-primary">
-            Edit Contact
+          <button type="submit" className="btn btn-warning">
+            Update Contact
           </button>
         </form>
       </div>

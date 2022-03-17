@@ -4,15 +4,18 @@ import { Link } from "react-router-dom";
 // import '.../styles/App.scss';
 // import './styles/App.scss';
 import "../../styles/App.scss";
+import { deleteContact } from "../../actions/contactAction";
+import { useDispatch } from "react-redux";
 
-const Contact = ({ contact }) => {
+const Contact = ({ contact, selectAll }) => {
+  const dispatch = useDispatch();
   const { name, phone, email, id } = contact;
 
   return (
     <tr>
       <td>
         <div className="custom-control custom-checkbox">
-          <input type="checkbox" className="custom-control-input" />
+          <input checked={ selectAll } type="checkbox" className="custom-control-input" />
           <label className="custom-control-label" />
         </div>
       </td>
@@ -31,10 +34,9 @@ const Contact = ({ contact }) => {
         <Link to={`contacts/edit/${id}`} style={{ marginRight: "5px" }}>
           <span className="material-icons text-primary">edit</span>
         </Link>
-        <a href="#">
-          <span className="material-icons text-danger">remove_circle</span>
-        </a>
-      </td>
+        
+          <span className="material-icons text-danger" onClick={()=> dispatch(deleteContact(id))} style={{cursor:"pointer"}}>remove_circle</span>
+              </td>
     </tr>
   );
 };
